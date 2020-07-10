@@ -55,7 +55,6 @@ function Header() {
         <div className={clsx(styles.square, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)}>
           <img key={isClient} src={useBaseUrl(isDarkTheme ? 'img/logo-dark.svg' : 'img/logo-light.svg')} alt="Mercurio" />
         </div>
-        {isDarkTheme ? 'Daaaark' : 'Liiight'}
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <p>A simple React component to make your apps reach all ears (or eyes).</p>
