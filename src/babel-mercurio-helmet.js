@@ -51,7 +51,7 @@ exports.default = function ship({ types: t }) {
       post() {},
       visitor: {
          CallExpression(path, state) {
-            if (!state.file.opts.filename.endsWith('mercurio/index.js')) return
+            if (!state.file.opts.filename.endsWith('mercurio-lives/index.js')) return
             // if (!callExpressionTester.test(path)) {
             //    return
             // }
