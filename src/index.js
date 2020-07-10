@@ -16,7 +16,7 @@ const MercurioProvider = ({ children, initialLocale, locale, defaultMessage }) =
   useEffect(() => {
     if (locale) setInternalLocale(locale)
   }, [locale])
-  return <MercurioContext.Provider value={{ setLocale, locale: internalLocale, defaultMessage }}>{children}</MercurioContext.Provider>
+  return <MercurioContext.Provider value={{ setLocale: setInternalLocale, locale: internalLocale, defaultMessage }}>{children}</MercurioContext.Provider>
 }
 
 MercurioProvider.propTypes = {
