@@ -1,5 +1,5 @@
-# mercurio-lives
+# Mercurio
 
-Still being build.
+This readme is a WIP.
 
 Docs on https://mecurio.marcossi.com
