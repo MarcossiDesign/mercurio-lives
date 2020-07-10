@@ -52,7 +52,7 @@ function Header() {
   return (
     <header className={styles.heroBanner}>
       <div className="container">
-        <div className={clsx(styles.square, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)}>
+        <div key={isClient} className={clsx(styles.square, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)}>
           <img key={isClient} src={useBaseUrl(isDarkTheme ? 'img/logo-dark.svg' : 'img/logo-light.svg')} alt="Mercurio" />
         </div>
         <h1 className="hero__title">{siteConfig.title}</h1>
