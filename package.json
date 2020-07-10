@@ -7,7 +7,7 @@
     "prebuild": "rm -rf lib/*",
     "build": "npm run build:lib && npm run build:docs",
     "build:lib": "babel --out-dir lib src",
-    "build:docs": "cd docs && npm run build"
+    "build:docs": "cd docs && npm i && npm run build"
   },
   "repository": {
     "type": "git",
