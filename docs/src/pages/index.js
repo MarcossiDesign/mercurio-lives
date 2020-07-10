@@ -47,19 +47,20 @@ function Feature({ imageUrl, title, description }) {
 
 function Header() {
   const context = useDocusaurusContext()
-  const { siteConfig = {} } = context
+  const { siteConfig = {}, isClient } = context
   const { isDarkTheme } = useThemeContext()
   return (
     <header className={styles.heroBanner}>
       <div className="container">
         <div className={clsx(styles.square, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)}>
-          <img src={useBaseUrl(isDarkTheme ? 'img/logo-dark.svg' : 'img/logo-light.svg')} alt="Mercurio" />
+          <img key={isClient} src={useBaseUrl(isDarkTheme ? 'img/logo-dark.svg' : 'img/logo-light.svg')} alt="Mercurio" />
         </div>
+        {isDarkTheme ? 'Daaaark' : 'Liiight'}
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <p>A simple React component to make your apps reach all ears (or eyes).</p>
         <div className={styles.buttons}>
-          <Link className={clsx(styles.button, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)} to={useBaseUrl('docs/')}>
+          <Link key={isClient} className={clsx(styles.button, isDarkTheme && styles.skeuShadowDark, styles.skeuShadow)} to={useBaseUrl('docs/')}>
             GET STARTED
           </Link>
         </div>
@@ -69,11 +70,12 @@ function Header() {
 }
 
 function Explanation() {
+  const { isClient } = useDocusaurusContext()
   const { isDarkTheme } = useThemeContext()
   return (
     <section className="text--center">
       <h3>Like magic, but it's not</h3>
-      <img src={useBaseUrl(isDarkTheme ? 'img/explanation-dark.svg' : 'img/explanation-light.svg')} alt="Mercurio" />
+      <img key={isClient} src={useBaseUrl(isDarkTheme ? 'img/explanation-dark.svg' : 'img/explanation-light.svg')} alt="Mercurio" />
     </section>
   )
 }
