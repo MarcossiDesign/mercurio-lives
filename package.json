@@ -1,0 +1,42 @@
+{
+  "name": "mercurio-lives",
+  "version": "1.0.0",
+  "description": "Lo and behold, listen to what Mercurio told!",
+  "main": "lib/index.js",
+  "scripts": {
+    "prebuild": "rm -rf lib/*",
+    "build": "babel --out-dir lib src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarcossiDesign/mercurio-lives.git"
+  },
+  "keywords": [
+    "intl",
+    "mecurio",
+    "i18n",
+    "translate"
+  ],
+  "author": "Igor Marcossi <igor@marcossi.com> (Kinark)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarcossiDesign/mercurio-lives/issues"
+  },
+  "homepage": "https://github.com/MarcossiDesign/mercurio-lives#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "release-it": "^13.6.5"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "lodash.uniq": "^4.5.0",
+    "path": "^0.12.7",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1"
+  }
+}
