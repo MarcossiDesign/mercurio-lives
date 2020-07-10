@@ -1,6 +1,6 @@
 {
   "name": "mercurio-lives",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Lo and behold, listen to what Mercurio told!",
   "main": "lib/index.js",
   "scripts": {
