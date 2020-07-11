@@ -3,31 +3,22 @@ import p from 'path'
 
 import getRoot from './getRoot'
 import constants from './constants'
+import getBabelConfigFile from './getBabelConfigFile'
 
-function getBabelConfigFile() {
-  const absolutePath = getRoot()
+function getHelmetSettings() {
+  const babelConfigFile = getBabelConfigFile()
 
-  const babelJSONConfigFileLocation = p.join(absolutePath, '.babelrc')
-  const babelJSConfigFileLocation = p.join(absolutePath, '.babelrc.js')
+  const helmetConfig = babelConfigFile.plugins.find((plugin) => plugin[0].endsWith(constants.BABEL_PLUGIN_NAME))
+  if (helmetConfig === -1) return
 
-  const babelJSONConfigFileExists = fs.existsSync(babelJSONConfigFileLocation)
-  const babelJSConfigFileExists = fs.existsSync(babelJSConfigFileLocation)
-
-  if (!babelJSONConfigFileExists || !babelJSConfigFileExists) return
-
-  const babelConfigFile = babelJSONConfigFileExists ? JSON.parse(fs.readFileSync(babelJSONConfigFileLocation, 'utf8')) : require(babelJSConfigFileLocation)
-
-  const shipConfig = babelConfigFile.plugins.find((plugin) => plugin[0].endsWith(constants.BABEL_PLUGIN_NAME))
-  if (shipConfig === -1) return
-
-  const { filesOutput = constants.FILES_OUTPUT, locales = constants.LOCALES } = shipConfig[1]
+  const { filesOutput = constants.FILES_OUTPUT, locales = constants.LOCALES } = helmetConfig[1]
   return { filesOutput, locales }
 }
 
 function getTranslationsLocation() {
-  const absolutePath = getRoot()
-  const { filesOutput } = getBabelConfigFile()
-  const absoluteFilesOutput = p.join(absolutePath, filesOutput, constants.TRANSLATIONS_FILE_NAME)
+  const root = getRoot()
+  const { filesOutput } = getHelmetSettings()
+  const absoluteFilesOutput = p.join(root, filesOutput, constants.TRANSLATIONS_FILE_NAME)
   return absoluteFilesOutput
 }
 
@@ -44,10 +35,10 @@ class MercurioSail {
     })
 
     compiler.hooks.afterCompile.tap('after-compile', (compilation) => {
-      const absolutePath = getRoot()
-      const { filesOutput, locales } = getBabelConfigFile()
+      const root = getRoot()
+      const { filesOutput, locales } = getHelmetSettings()
       const translations = {}
-      const absoluteFilesOutput = p.join(absolutePath, filesOutput)
+      const absoluteFilesOutput = p.join(root, filesOutput)
       const localesFiles = p.join(absoluteFilesOutput, constants.LOCALES_FOLDER_NAME)
       locales.forEach((locale) => {
         const localeFile = p.join(localesFiles, `${locale}.json`)
