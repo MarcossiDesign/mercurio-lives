@@ -6,9 +6,9 @@
   "scripts": {
     "prebuild": "rm -rf lib/*",
     "build": "npm run build:lib && npm run build:docs",
-    "build:lib": "babel --out-dir lib src",
+    "build:lib": "babel --out-dir lib src --copy-files",
     "build:docs": "cd docs && npm i && npm run build",
-    "start": "babel --watch --out-dir lib src"
+    "start": "babel --watch --out-dir lib src --copy-files"
   },
   "repository": {
     "type": "git",
