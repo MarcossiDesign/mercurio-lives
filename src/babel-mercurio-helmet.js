@@ -5,18 +5,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 })
 
-const traverseExpression = (t, arg) => {
-  if (t.isStringLiteral(arg)) {
-    return arg
-  }
-
-  if (t.isBinaryExpression(arg)) {
-    return traverseExpression(t, arg.left)
-  }
-
-  return null
-}
-
 function getRoot() {
   let relativePath = p.join(p.sep, process.cwd())
   if (process.platform === 'win32') {
@@ -50,23 +38,6 @@ exports.default = function ship({ types: t }) {
   return {
     post() {},
     visitor: {
-      CallExpression(path, state) {
-        if (!state.file.opts.filename.endsWith('mercurio-lives/lib/index.js')) return
-        // if (!callExpressionTester.test(path)) {
-        //    return
-        // }
-
-        const args = path.node.arguments
-        if (!args.length) {
-          return
-        }
-
-        const firstArg = traverseExpression(t, args[0])
-
-        if (firstArg) {
-          firstArg.value = firstArg.value.replace('mercurioTranslationsFile', p.join(getRoot(), this.opts.filesOutput, 'translations.json'))
-        }
-      },
       JSXElement(path) {
         // const { file } = state
         const { attributes: attributesNode, name: nameNode } = path.node.openingElement
