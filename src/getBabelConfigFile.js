@@ -15,7 +15,7 @@ export default () => {
       if (fs.existsSync(filePath)) foundBabelConfigFilePath = filePath
     }
   }
-  if (!foundBabelConfigFilePath) return foundBabelConfigFilePath
+  if (!foundBabelConfigFilePath) return false
   const ext = p.extname(foundBabelConfigFilePath)
   if (ext === '.json' || ext === '') return JSON.parse(fs.readFileSync(foundBabelConfigFilePath, 'utf8'))
   return require(foundBabelConfigFilePath, 'utf8')
