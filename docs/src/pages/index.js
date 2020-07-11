@@ -11,12 +11,12 @@ const features = [
   {
     title: <>Works by itself</>,
     imageUrl: 'img/works-by-itself-feature-illustration.svg',
-    description: <>The Provider has it's own Context. No need to create one or connect to redux just for translate your app (but you can, if you want).</>
+    description: <>The Provider has it&apos;s own Context. No need to create one or connect to redux just for translate your app (but you can, if you want).</>
   },
   {
     title: <>Automagic</>,
     imageUrl: 'img/automagic-feature-illustration.svg',
-    description: <>The Babel and Webpack plugins extracts your variables, injects the translations file and makes sure everything is in sync, always.</>
+    description: <>The Babel and Webpack plugins extract your variables, inject the translations file and make sure everything is in sync, always.</>
   },
   {
     title: <>Simple</>,
