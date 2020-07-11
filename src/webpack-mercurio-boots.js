@@ -29,7 +29,7 @@ function getTranslationsLocation() {
 class MercurioSail {
   apply(compiler) {
     compiler.resolverFactory.plugin('resolver normal', (resolver) => {
-      const target = resolver.ensureHook(this.target);
+      const target = resolver.ensureHook(this.target)
       resolver.hooks.resolve.tapAsync('MyPlugin', (params, resolveContext, callback) => {
         if (params.request.endsWith('mercurioTranslationsFile')) {
           const modified = { ...params, request: getTranslationsLocation() }
@@ -41,11 +41,22 @@ class MercurioSail {
 
     compiler.hooks.afterCompile.tap('after-compile', (compilation) => {
       const absolutePath = getRoot()
-      const babelConfigFileLocation = p.join(absolutePath, '.babelrc')
-      if (!fs.existsSync(babelConfigFileLocation)) return
-      const babelConfigFile = JSON.parse(fs.readFileSync(babelConfigFileLocation, 'utf8'))
+
+      const babelJSONConfigFileLocation = p.join(absolutePath, '.babelrc')
+      const babelJSConfigFileLocation = p.join(absolutePath, '.babelrc.js')
+
+      const babelJSONConfigFileExists = fs.existsSync(babelJSONConfigFileLocation)
+      const babelJSConfigFileExists = fs.existsSync(babelJSConfigFileLocation)
+
+      if (!babelJSONConfigFileExists || !babelJSConfigFileExists) return
+
+      const babelConfigFile = babelJSONConfigFileExists
+        ? JSON.parse(fs.readFileSync(babelJSONConfigFileLocation, 'utf8'))
+        : fs.readFileSync(babelJSConfigFileLocation, 'utf8')
+      
       const shipConfig = babelConfigFile.plugins.find((plugin) => plugin[0].endsWith(BABEL_PLUGIN_NAME))
       if (shipConfig === -1) return
+      
       const { filesOutput = './mercurio', locales = ['en'] } = shipConfig[1]
       const translations = {}
       const absoluteFilesOutput = p.join(absolutePath, filesOutput)
