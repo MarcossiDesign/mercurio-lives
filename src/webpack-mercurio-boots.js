@@ -19,9 +19,9 @@ function getHelmetSettings() {
 
 function getTranslationsLocation() {
   const root = getRoot()
-  const getHelmetSettings = getHelmetSettings()
-  if (!getHelmetSettings) return false
-  const { filesOutput } = getHelmetSettings
+  const helmetSettings = getHelmetSettings()
+  if (!helmetSettings) return false
+  const { filesOutput } = helmetSettings
   const absoluteFilesOutput = p.join(root, filesOutput, constants.TRANSLATIONS_FILE_NAME)
   return absoluteFilesOutput
 }
