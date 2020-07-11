@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "fs": "0.0.1-security",
-    "lodash.uniq": "^4.5.0",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1"
