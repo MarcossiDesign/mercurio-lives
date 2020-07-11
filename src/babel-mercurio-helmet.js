@@ -1,7 +1,7 @@
 import fs from 'fs'
 import p from 'path'
 
-import defaults from './defaults'
+import constants from './constants'
 import getRoot from './getRoot'
 
 Object.defineProperty(exports, '__esModule', {
@@ -9,11 +9,11 @@ Object.defineProperty(exports, '__esModule', {
 })
 
 function storeVariable(opts, newVar) {
-  const { locales = defaults.locales, filesOutput = defaults.filesOutput } = opts
+  const { locales = constants.LOCALES, filesOutput = constants.FILES_OUTPUT } = opts
   const relativePath = getRoot()
   locales.forEach((locale) => {
     let currentLocaleFile = {}
-    const localeFilename = p.join(relativePath, filesOutput, defaults.localesFolderName, `${locale}.json`)
+    const localeFilename = p.join(relativePath, filesOutput, constants.LOCALES_FOLDER_NAME, `${locale}.json`)
     if (fs.existsSync(localeFilename)) currentLocaleFile = JSON.parse(fs.readFileSync(localeFilename, 'utf8'))
     const newLocaleFile = { ...newVar, ...currentLocaleFile }
     fs.mkdirSync(p.dirname(localeFilename), { recursive: true })
@@ -25,14 +25,13 @@ function storeVariable(opts, newVar) {
 //    return opts.moduleSourceName || '~/components/mercurio'
 // }
 
-exports.default = function ship({ types: t }) {
+exports.default = function ship() {
   return {
-    post() {},
     visitor: {
       JSXElement(path) {
         // const { file } = state
         const { attributes: attributesNode, name: nameNode } = path.node.openingElement
-        if (nameNode.name !== defaults.mercurioTagName) return
+        if (nameNode.name !== constants.MERCURIO_TAG_NAME) return
         attributesNode
           .filter((attr) => attr.type === 'JSXAttribute')
           .forEach(({ value: valueNode, name: attrNameNode }) => {
