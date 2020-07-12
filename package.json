@@ -8,7 +8,8 @@
     "build": "npm run build:lib && npm run build:docs",
     "build:lib": "babel --out-dir lib src --copy-files",
     "build:docs": "cd docs && npm i && npm run build",
-    "start": "babel --watch --out-dir lib src --copy-files"
+    "start": "babel --watch --out-dir lib src --copy-files",
+    "prepublish": "npm run build:lib"
   },
   "repository": {
     "type": "git",
