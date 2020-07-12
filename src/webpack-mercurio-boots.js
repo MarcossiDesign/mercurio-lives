@@ -5,6 +5,8 @@ import getRoot from './getRoot'
 import constants from './constants'
 import getBabelConfigFile from './getBabelConfigFile'
 
+const PLUGIN_NAME = 'MercurioBoots'
+
 function getHelmetSettings() {
   const babelConfigFile = getBabelConfigFile()
 
@@ -26,26 +28,34 @@ function getTranslationsLocation() {
   return absoluteFilesOutput
 }
 
-class MercurioSail {
+class MercurioBoots {
   apply(compiler) {
     // Resolve alias in React components
     compiler.resolverFactory.plugin('resolver normal', (resolver) => {
-      resolver.hooks.resolve.tapAsync('MercurioBoots', (params, resolveContext, callback) => {
+      resolver.hooks.resolve.tapAsync(PLUGIN_NAME, (params, resolveContext, callback) => {
         if (params.request.endsWith(constants.TRANSLATION_FILE_ALIAS)) {
-          const translationLocation = getTranslationsLocation()
-          if (!translationLocation) throw new Error('Babel plugin not present or misconfigured.')
-          const modified = { ...params, request: translationLocation }
-          return resolver.doResolve('resolve', modified, null, resolveContext, callback)
+          const translationsLocation = getTranslationsLocation()
+          const modified = { ...params, request: fs.existsSync(translationsLocation) ? translationsLocation : './emptyTranslations.json' }
+          return resolver.doResolve(resolver.ensureHook('resolve'), modified, null, resolveContext, callback)
         }
         return callback()
       })
     })
 
+    // Generate dumb Translations before compilation
+    compiler.hooks.beforeCompile.tap(PLUGIN_NAME, () => {
+      const translationsFilename = getTranslationsLocation()
+      if (!translationsFilename) throw new Error('Babel plugin not present or misconfigured.')
+      if (fs.existsSync(translationsFilename)) return
+      fs.mkdirSync(p.dirname(translationsFilename), { recursive: true })
+      fs.writeFileSync(translationsFilename, JSON.stringify({}))
+    })
+
     // Generate the Translations file
-    compiler.hooks.afterCompile.tap('after-compile', (compilation) => {
+    compiler.hooks.afterCompile.tap(PLUGIN_NAME, (compilation) => {
       const root = getRoot()
       const helmetSettings = getHelmetSettings()
-      if (!helmetSettings) throw new Error('Babel plugin not present or misconfigured.')
+      if (!helmetSettings) return compilation.errors.push(new Error('Babel plugin not present or misconfigured.'))
       const { filesOutput, locales } = helmetSettings
       const translations = {}
       const absoluteFilesOutput = p.join(root, filesOutput)
@@ -55,16 +65,17 @@ class MercurioSail {
         if (!fs.existsSync(localeFile)) return
         translations[locale] = JSON.parse(fs.readFileSync(localeFile, 'utf8'))
       })
-      const translationsFilename = p.join(absoluteFilesOutput, 'translations.json')
+      const translationsFilename = p.join(absoluteFilesOutput, constants.TRANSLATIONS_FILE_NAME)
       compilation.contextDependencies.add(absoluteFilesOutput)
       if (
         !fs.existsSync(localesFiles) ||
         (fs.existsSync(translationsFilename) && JSON.stringify(translations) === fs.readFileSync(translationsFilename, 'utf8'))
-      )
+      ) {
         return
+      }
       fs.writeFileSync(translationsFilename, JSON.stringify(translations))
     })
   }
 }
 
-module.exports = MercurioSail
+module.exports = MercurioBoots

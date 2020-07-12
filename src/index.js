@@ -1,13 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-let translations
-try {
-  // eslint-disable-next-line global-require, import/no-unresolved
-  translations = require('mercurioTranslationsFile')
-} catch (error) {
-  translations = {}
-}
+// eslint-disable-next-line import/no-unresolved
+import translations from 'mercurioTranslationsFile'
 
 const MercurioContext = React.createContext()
 
